@@ -13,7 +13,6 @@ export const Login = () => {
 
     const buttonStyle = css({
         width: '100%',
-        height: '100vh',
         marginTop: '160px'
     });
 
