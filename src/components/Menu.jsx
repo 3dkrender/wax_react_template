@@ -29,8 +29,10 @@ export const Menu = (props) => {
             <div className="d-flex align-items-center">
                 <img src={LogoIcon} alt="LogoIcon" width="42" />
                 <div className="ms-4 text-white">
-                    Money $: {UserState.balance}
-                </div>
+{                (UserState.isLogged) ?
+                    `${UserState.name} - Wallet: ${UserState.balance}` : ''
+                    
+}                </div>
             </div>
             <div className="d-flex">
                 <Link to="/" className="btn-item">Main</Link>

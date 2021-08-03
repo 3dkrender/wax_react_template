@@ -6,6 +6,7 @@ import { Anchor } from 'ual-anchor';
 import {storeAppDispatch} from './GlobalState/Store';
 import { setPlayerBalance, setPlayerData, setPlayerLogout } from './GlobalState/UserReducer';
 import { User as UserAuth } from 'universal-authenticator-library';
+import { TransactionHeader } from 'anchor-link';
 
 /**
  * Clase para gestionar los datos del usuario, guardará el logín y lo borrará con el logout
@@ -17,7 +18,7 @@ export class User {
         chainId: 'f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12',
         rpcEndpoints: [{
             protocol: 'https',
-            host: 'testnet.waxsweden.org',
+            host: 'https://testnet-wax.3dkrender.com',
             port: ''
         }]
     };
@@ -54,6 +55,8 @@ export class User {
     logout() {
         this.authName = undefined;
         this.session = undefined;
+        
+        this.ual.logoutUser();
 
         storeAppDispatch(setPlayerLogout());
 
@@ -64,6 +67,7 @@ export class User {
 
     // Respuesta de la llamada a la API de UAL
     async ualCallback(userObject) {
+
         this.session = userObject[0];
         this.serviceLoginName = this.session.constructor.name;
         this.authName = this.session.accountName;
