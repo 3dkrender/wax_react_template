@@ -6,7 +6,6 @@ import Store from './GlobalState/Store';
 import reportWebVitals from './reportWebVitals';
 import { UserService } from './UserService';
 
-
 UserService.init();
 
 ReactDOM.render(

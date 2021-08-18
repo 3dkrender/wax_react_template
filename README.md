@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# UAL React Template
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Template creado para facilitar el uso de WAX con React.
 
-## Available Scripts
 
-In the project directory, you can run:
+![Logo 3DKRender](https://cdn.discordapp.com/attachments/813862875944845313/813866667150409769/3DK_LOGO_400x120.png)
 
-### `npm start`
+Recuerda que se necesita instalar las dependencias primero: 
+```
+> npm i
+```
+Para iniciar el proyecto se puede hacer con: 
+```
+> npm run start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Dependencias usadas
+- Dependencias para el uso de WAX
+    - @eosdacio/ual-wax
+    - ual-anchor
+    - ual-plainjs-renderer
+    - anchor-link
+- Dependencia de rutas de react
+    - react-router-dom
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Dependencias de estado global
+    - redux
+    - react-redux
+    - @reduxjs/toolkit
 
-### `npm test`
+- Dependencias de diseño y estilos
+    - bootstrap
+    - glamor
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Dependencias de ayuda
+    - lodash
 
-### `npm run build`
+## Archivos importantes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **UserService.js**: Archivo necesario para gestionar el login del usuario y la configuración de UAL y distintos sistemas de login, además de que cuenta con un método que nos indica el estado del usuario (**isLogged()**) devolviendo un **true** o **false** si el usuario ya ha hecho login.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    **Recuerda** comentar o descomentar según te convenga las lineas para trabajar con mainet o con testnet.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    Cuando el usuario haya hecho login estos datos se guardarán en el estado global de la aplicación gracias a Redux y @reduxjs/toolkit (tambien guardamos un **isLogged** para tener una actualización en tiempo real en React).
 
-### `npm run eject`
+- Carpeta **GlobalState/**: En esta carpeta tenemos la configuración y el **store** de **redux** para poder guardar y gestionar los datos del usuario en un estado global.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Archivo **App.js**: En este archivo gestionamos el sistema de rutas de la página.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-  Archivo **index.js**: En este archivo iniciamos el **UserService** (UserService.init()) y también tenemos el <Provider> del **store** de **redux**.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Carpeta **pages**: Dentro de esta carpeta guardaremos las páginas de nuestro sitio. **Recuerda configurar las rutas de las páginas nuevas en tu App.js**.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Carpeta **components**: Acá irán los componentes de nuestra aplicación. Para este ejemplo solo tenemos a **Menu.jsx** que es componente del menú y que nos ayuda a redireccionar al usuario cuando haya hecho login.
 
-## Learn More
+## Archivo Menu.jsx
+El archivo **components/Menu.jsx** es el componente del menú de nuestra aplicación/página y cuenta con cuatro pestañas, Main, Home, Page2, Login/Logout.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Si nos fijamos tendremos dos pestañas deshabilitada que no se permite el acceso: Home y Page2. Para lograr hacer esto simplemente se comprueba si el usuario ha hecho login o no gracias a **UserState.isLogged** (en el estado de redux) y se muestra u oculta con algún estilo **CSS**.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+En cuanto a la pestaña Login/Logout mostramos una u otra dependiendo del estado del usuario, esto se puede ver fácilmente si entras el archivo pero lo que verías sería algo así: 
+```jsx
+ {
+    !UserState.isLogged &&
+    <button className="..." onClick={handleLogin}><img .../> Login</button>
+}
+{
+    UserState.isLogged &&
+    <Link to="/" className="..." onClick={onHandleLogout}>Logout <img .../></Link>
+}
+```
+## Sistema de login
 
-### Code Splitting
+El sistema de inicio de login está en el **components/Menu.jsx**. Una vez que se clique el botón de login en el menú, este llama a **handleLogin** y a la vez llama a la función de **UserService.login()** dentro de esta función se le puede pasar una función anónima como callback y cuando se haya hecho login se recibe una respuesta, dentro de este callback comprobamos si se ha hecho login o no.
+Si se hace login se redirige hacía una página (**en este caso /home**), de lo contrario se hace el logout del usuario para limpiar datos.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```jsx
+const handleLogin = () => {
+    UserService.login(() => {
+        if (UserService.isLogged()) {
+            locationHistory.push('/home');
+        } else {
+            dispatch(setPlayerLogout());
+            UserService.logout();
+        }
+    });
+}
+```
 
-### Analyzing the Bundle Size
+## Protección de las rutas de React
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Las rutas hay que protegerlas por eso es necesario crear un archivo llamado **ProtectedRouter.jsx**. Nosotros hemos creado uno para el ejemplo el cual comprueba la ruta en que estamos y obtiene el estado del usuario para saber si ha hecho login o no (**UserService.isLogged()**), si no se ha hecho login saca el usuario de esa ruta y lo manda hacía otra ruta que hemos preconfigurado, en este caso redireccionamos hacía **/login**.
 
-### Making a Progressive Web App
+## Enviar WAX
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Para ver un ejemplo de como envíar algo de WAX puedes ir a **pages/Page2.jsx**. El **UserService** guarda la sesión y simplemente accedemos a esa sesión y firmamos alguna transacción, el código que verás de ejemplo será el siguiente: 
 
-### Advanced Configuration
+```js
+UserService.session.signTransaction(
+    {
+        actions: [{
+            account: 'eosio.token',
+            name: 'transfer',
+            authorization: [{
+                actor: UserService.authName,
+                permission: 'active'
+            }],
+            data: {
+                from: UserService.authName,
+                to: '3dkrenderwax',
+                quantity: '1.00000000 WAX',
+                memo: 'This works!'
+            }
+        }]
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+).then((response) => {
+    if(response.status === 'executed') {
+        UserService.getBalance();
+    }
+});
+```
+---
+![Logo 3DKRender](https://cdn.discordapp.com/attachments/813862875944845313/813866667150409769/3DK_LOGO_400x120.png)
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Esperamos que nuestras herramientas te faciliten la vida y que puedas seguir desarrollando en esta increíble tecnología WAX.

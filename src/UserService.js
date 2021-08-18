@@ -7,45 +7,48 @@ import {storeAppDispatch} from './GlobalState/Store';
 import { setPlayerBalance, setPlayerData, setPlayerLogout } from './GlobalState/UserReducer';
 
 /**
- * Clase para gestionar los datos del usuario, guardará el logín y lo borrará con el logout
+ * Class to manage user data; it will be saved on Login and deleted on Logout
  */
 export class User {
 
     appName = 'ual_template';
+
     /**
      * WAX Mainnet configuration
      */
-    myChain = {
-        chainId: '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4',
-        rpcEndpoints: [{
-            protocol: 'https',
-            host: 'apiwax.3dkrender.com',
-            port: ''
-        }]
-    };
-    /**
-     * WAX Testnet configuration
-     */
     // myChain = {
-    //     chainId: 'f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12',
+    //     chainId: '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4',
     //     rpcEndpoints: [{
     //         protocol: 'https',
-    //         host: 'testnet-wax.3dkrender.com',
+    //         host: 'apiwax.3dkrender.com',
     //         port: ''
     //     }]
     // };
+
+    /**
+     * WAX Testnet configuration
+     */
+    myChain = {
+        chainId: 'f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12',
+        rpcEndpoints: [{
+            protocol: 'https',
+            host: 'testnet-wax.3dkrender.com',
+            port: ''
+        }]
+    };
+
     ual;
 
-    // Datos de sesión del Usuario
+    // User session data
     authName = undefined;
     serviceLoginName = undefined;
-    // Contiene los métodos para firmar peticiones y obtener balance actual
+    // Shows petition signing and current balance obtaining methods
     session = undefined;
 
-    // El balance actual
+    // Current balance
     userBalance = 0;
 
-    // Callback parar responder que se ha hecho login
+    // Callback to refer to successful login
     callbackServerUserData = undefined;
 
     getName() {
@@ -77,17 +80,19 @@ export class User {
         }
     }
 
-    // Respuesta de la llamada a la API de UAL
+    // UAL API call response
     async ualCallback(userObject) {
 
         this.session = userObject[0];
         this.serviceLoginName = this.session.constructor.name;
         this.authName = this.session.accountName;
         
+        console.log("El balance", (this.balance !== undefined) ? this.balance : 0);
+
         storeAppDispatch(setPlayerData({
             name: this.authName,
             isLogged: this.isLogged(),
-            balance: this.balance
+            balance: (this.balance !== undefined) ? this.balance : 0
         }));
 
         this.getBalance();
@@ -101,12 +106,14 @@ export class User {
         const balance = this.session.rpc.get_account(this.authName);
         balance.then((balance) => {
             this.balance = balance.core_liquid_balance; 
-            storeAppDispatch(setPlayerBalance(this.balance));
+            console.log("Balance no liquido: ", balance);
+            console.log("Balance liquido: ", this.balance);
+            storeAppDispatch(setPlayerBalance((this.balance !== undefined) ? this.balance : 0));
         });
         return balance;
     }
 
-    // Se llama el init del UserService para preparar el login UAL.
+    // UserService init called to prepare UAL Login.
     init() {
         // Binding:
         this.ualCallback = this.ualCallback.bind(this);
