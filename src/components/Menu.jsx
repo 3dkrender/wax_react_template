@@ -26,7 +26,7 @@ export const Menu = (props) => {
                 locationHistory.push('/home');
             } else {
                 dispatch(setPlayerLogout());
-                UserService.logout();
+                // UserService.logout();
             }
         });
     }

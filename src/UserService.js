@@ -68,6 +68,7 @@ export class User {
     }
 
     logout() {
+        console.log("Logout");
         this.authName = undefined;
         this.session = undefined;
         
@@ -87,8 +88,6 @@ export class User {
         this.serviceLoginName = this.session.constructor.name;
         this.authName = this.session.accountName;
         
-        console.log("El balance", (this.balance !== undefined) ? this.balance : 0);
-
         storeAppDispatch(setPlayerData({
             name: this.authName,
             isLogged: this.isLogged(),
@@ -106,8 +105,6 @@ export class User {
         const balance = this.session.rpc.get_account(this.authName);
         balance.then((balance) => {
             this.balance = balance.core_liquid_balance; 
-            console.log("Balance no liquido: ", balance);
-            console.log("Balance liquido: ", this.balance);
             storeAppDispatch(setPlayerBalance((this.balance !== undefined) ? this.balance : 0));
         });
         return balance;
