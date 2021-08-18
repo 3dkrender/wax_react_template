@@ -5,16 +5,30 @@ import { Link, Redirect } from 'react-router-dom';
 import LogoIcon from '../images/3DK_LOGO_ICON_1300.png';
 import EnterIcon from '../images/enter.png';
 import ExitIcon from '../images/exit.png';
+import { useHistory } from 'react-router-dom';
 import { UserService } from '../UserService';
+import { useDispatch } from 'react-redux';
+import { setPlayerLogout } from '../GlobalState/UserReducer';
 
 export const Menu = (props) => {
 
+    const dispatch = useDispatch();
+    const locationHistory = useHistory();
     const UserState = useSelector((store) => store.user);
     
     const disabledStyle = css({
         opacity: 0.5
     })
 
+    const handleLogin = () => {
+        UserService.login(() => {
+            if(UserService.isLogged()) {
+                locationHistory.push('/home');
+            } else {
+                dispatch(setPlayerLogout());
+            }
+        });
+    }
     const onHandleLogout = () => {
         UserService.logout();
     }
@@ -40,11 +54,11 @@ export const Menu = (props) => {
                 <Link to="/page2" className={`${(UserState.isLogged) ? '' : disabledStyle} btn-item`}>Page2</Link>
                 {
                     !UserState.isLogged &&
-                    <Link to="/login" className="btn-item"><img src={EnterIcon} alt="Loggin" width="24" /> Login</Link>
+                    <button className="btn-item" onClick={handleLogin}><img src={EnterIcon} alt="Loggin" width="24" /> Login</button>
                 }
                 {
                     UserState.isLogged &&
-                    <Link to="/logout" className="btn-item"  onClick={onHandleLogout}>Logout <img src={ExitIcon} alt="Exit" width="24"/></Link>
+                    <Link to="/" className="btn-item"  onClick={onHandleLogout}>Logout <img src={ExitIcon} alt="Exit" width="24"/></Link>
                 }
             </div>
         </nav>

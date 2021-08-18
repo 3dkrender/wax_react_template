@@ -5,8 +5,6 @@ import { Anchor } from 'ual-anchor';
 
 import {storeAppDispatch} from './GlobalState/Store';
 import { setPlayerBalance, setPlayerData, setPlayerLogout } from './GlobalState/UserReducer';
-import { User as UserAuth } from 'universal-authenticator-library';
-import { TransactionHeader } from 'anchor-link';
 
 /**
  * Clase para gestionar los datos del usuario, guardará el logín y lo borrará con el logout
@@ -14,14 +12,28 @@ import { TransactionHeader } from 'anchor-link';
 export class User {
 
     appName = 'ual_template';
+    /**
+     * WAX Mainnet configuration
+     */
     myChain = {
-        chainId: 'f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12',
+        chainId: '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4',
         rpcEndpoints: [{
             protocol: 'https',
-            host: 'https://testnet-wax.3dkrender.com',
+            host: 'apiwax.3dkrender.com',
             port: ''
         }]
     };
+    /**
+     * WAX Testnet configuration
+     */
+    // myChain = {
+    //     chainId: 'f16b1833c747c43682f4386fca9cbb327929334a762755ebec17f6f23c9b8a12',
+    //     rpcEndpoints: [{
+    //         protocol: 'https',
+    //         host: 'testnet-wax.3dkrender.com',
+    //         port: ''
+    //     }]
+    // };
     ual;
 
     // Datos de sesión del Usuario
@@ -72,8 +84,6 @@ export class User {
         this.serviceLoginName = this.session.constructor.name;
         this.authName = this.session.accountName;
         
-        this.session.rpc.endpoint = "https://testnet-wax.3dkrender.com";
-
         storeAppDispatch(setPlayerData({
             name: this.authName,
             isLogged: this.isLogged(),
@@ -102,6 +112,7 @@ export class User {
         this.ualCallback = this.ualCallback.bind(this);
 
         const wax = new Wax([this.myChain], { appName: this.appName });
+
         const anchor = new Anchor([this.myChain], { appName: this.appName });
 
         const divUal = document.createElement('div')
