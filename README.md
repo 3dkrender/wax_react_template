@@ -1,7 +1,6 @@
-# UAL React Template
+# React Template for WAX (UAL)
 
 Template creado para facilitar el uso de WAX con React.
-
 
 ![Logo 3DKRender](https://cdn.discordapp.com/attachments/813862875944845313/813866667150409769/3DK_LOGO_400x120.png)
 
