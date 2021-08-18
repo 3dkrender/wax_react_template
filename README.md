@@ -192,7 +192,7 @@ Para iniciar el proyecto se puede hacer con:
 
 - **UserService.js**: Archivo necesario para gestionar el login del usuario y la configuración de UAL y distintos sistemas de login, además de que cuenta con un método que nos indica el estado del usuario (**isLogged()**) devolviendo un **true** o **false** si el usuario ya ha hecho login.
 
-    **Recuerda** comentar o descomentar las líneas según te convenga para trabajar con mainet o con testnet.
+    **Recuerda** comentar o descomentar las líneas según te convenga para trabajar con mainnet o con testnet.
 
     Cuando el usuario haya hecho log-in, estos datos se guardarán en el estado global de la aplicación gracias a Redux y @reduxjs/toolkit (también guardamos un **isLogged** para tener una actualización en tiempo real en React).
 
