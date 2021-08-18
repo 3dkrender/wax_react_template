@@ -80,7 +80,6 @@ const handleLogin = () => {
             locationHistory.push('/home');
         } else {
             dispatch(setPlayerLogout());
-            UserService.logout();
         }
     });
 }
