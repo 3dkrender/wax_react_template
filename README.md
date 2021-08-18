@@ -89,7 +89,27 @@ const handleLogin = () => {
 
 ## Protección de las rutas de React
 
-Las rutas hay que protegerlas por eso es necesario crear un archivo llamado **ProtectedRouter.jsx**. Nosotros hemos creado uno para el ejemplo el cual comprueba la ruta en que estamos y obtiene el estado del usuario para saber si ha hecho login o no (**UserService.isLogged()**), si no se ha hecho login saca el usuario de esa ruta y lo manda hacía otra ruta que hemos preconfigurado, en este caso redireccionamos hacía **/login**.
+Las rutas hay que protegerlas por eso es necesario crear un componente llamado **ProtectedRouter.jsx**. Nosotros hemos creado uno para el ejemplo el cual comprueba la ruta en que estamos y obtiene el estado del usuario para saber si ha hecho login o no (**UserService.isLogged()**), si no se ha hecho login saca el usuario de esa ruta y lo manda hacía otra ruta que hemos preconfigurado, en este caso redireccionamos hacía **/login**.
+
+Para usar el componente simplemente vamos a nuestro **App.js** y ahí reemplazamos el <Route> por nuestro <ProtectedRouter>. Si abres **App.js** lo verás fácilmente: 
+
+```jsx
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Menu />
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <ProtectedRoute exact path="/page2" component={Page2} />
+          <ProtectedRoute exact path="/home" component={Home} />
+          <Redirect to="/"  />
+        </Switch>
+      </BrowserRouter>
+    </div>
+  );
+}
+```
 
 ## Enviar WAX
 
