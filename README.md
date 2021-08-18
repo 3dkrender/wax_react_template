@@ -4,7 +4,7 @@ Template creado para facilitar el uso de WAX con React.
 
 ![Logo 3DKRender](https://cdn.discordapp.com/attachments/813862875944845313/813866667150409769/3DK_LOGO_400x120.png)
 
-Recuerda que se necesita instalar las dependencias primero: 
+Recuerda que primero es necesario instalar las dependencias: 
 ```
 > npm i
 ```
@@ -38,9 +38,9 @@ Para iniciar el proyecto se puede hacer con:
 
 - **UserService.js**: Archivo necesario para gestionar el login del usuario y la configuración de UAL y distintos sistemas de login, además de que cuenta con un método que nos indica el estado del usuario (**isLogged()**) devolviendo un **true** o **false** si el usuario ya ha hecho login.
 
-    **Recuerda** comentar o descomentar según te convenga las lineas para trabajar con mainet o con testnet.
+    **Recuerda** comentar o descomentar las líneas según te convenga para trabajar con mainet o con testnet.
 
-    Cuando el usuario haya hecho login estos datos se guardarán en el estado global de la aplicación gracias a Redux y @reduxjs/toolkit (tambien guardamos un **isLogged** para tener una actualización en tiempo real en React).
+    Cuando el usuario haya hecho log-in, estos datos se guardarán en el estado global de la aplicación gracias a Redux y @reduxjs/toolkit (también guardamos un **isLogged** para tener una actualización en tiempo real en React).
 
 - Carpeta **GlobalState/**: En esta carpeta tenemos la configuración y el **store** de **redux** para poder guardar y gestionar los datos del usuario en un estado global.
 
@@ -50,14 +50,14 @@ Para iniciar el proyecto se puede hacer con:
 
 - Carpeta **pages**: Dentro de esta carpeta guardaremos las páginas de nuestro sitio. **Recuerda configurar las rutas de las páginas nuevas en tu App.js**.
 
-- Carpeta **components**: Acá irán los componentes de nuestra aplicación. Para este ejemplo solo tenemos a **Menu.jsx** que es componente del menú y que nos ayuda a redireccionar al usuario cuando haya hecho login.
+- Carpeta **components**: Aquí se almacenarán los componentes de nuestra aplicación. Para este ejemplo solo tenemos **Menu.jsx**, que es un componente del menú y que nos ayuda a redireccionar al usuario cuando este haga log-in.
 
 ## Archivo Menu.jsx
-El archivo **components/Menu.jsx** es el componente del menú de nuestra aplicación/página y cuenta con cuatro pestañas, Main, Home, Page2, Login/Logout.
+El archivo **components/Menu.jsx** es el componente del menú de nuestra aplicación/página y cuenta con cuatro pestañas: Main, Home, Page2 y Login/Logout.
 
-Si nos fijamos tendremos dos pestañas deshabilitada que no se permite el acceso: **Home** y **Page2**. Para lograr hacer esto simplemente se comprueba si el usuario ha hecho login o no gracias a **UserState.isLogged** (en el estado de redux) y se muestra u oculta con algún estilo **CSS**.
+Si nos fijamos, veremos que tenemos dos pestañas deshabilitadas a las que no se nos permite el acceso: **Home** y **Page2**. Para lograr hacer esto, simplemente deberemos comprobar si el usuario ha hecho log-in o no, gracias a **UserState.isLogged** (en el estado de redux), y se mostrará u ocultará con algún estilo **CSS**.
 
-En cuanto a la pestaña Login/Logout mostramos una u otra dependiendo del estado del usuario, esto se puede ver fácilmente si entras el archivo pero lo que verías sería algo así: 
+En cuanto a la pestaña Login/Logout, mostraremos una u otra dependiendo del estado del usuario. Esto se puede comprobar fácilmente al entrar en el archivo, pero lo que veremos será algo así: 
 ```jsx
  {
     !UserState.isLogged &&
@@ -70,8 +70,8 @@ En cuanto a la pestaña Login/Logout mostramos una u otra dependiendo del estado
 ```
 ## Sistema de login
 
-El sistema de inicio de login está en el **components/Menu.jsx**. Una vez que se haga click sobre el botón de login en el menú, este llama a **handleLogin** y a la vez llama a la función de **UserService.login()** dentro de esta función se le puede pasar una función anónima como callback y cuando se haya hecho login se recibe una respuesta, dentro de este callback comprobamos si se ha hecho login o no.
-Si se hace login se redirige hacía una página (**en este caso /home**), de lo contrario se hace el logout del usuario para limpiar datos.
+El sistema de inicio de log-in está en el **components/Menu.jsx**. Una vez que se haga click sobre el botón de log-in en el menú, este llama a **handleLogin** y a la vez llama a la función de **UserService.login()**. Dentro de esta función se puede pasar una función anónima como callback, y cuando se haya hecho log-in, se recibirá una respuesta. Dentro de este callback comprobaremos si se ha hecho log-in o no.
+Si se hace log-in se redirigirá hacia una página (**en este caso, /home**). De lo contrario, se hará log-out del usuario para limpiar datos.
 
 ```jsx
 const handleLogin = () => {
@@ -88,9 +88,9 @@ const handleLogin = () => {
 
 ## Protección de las rutas de React
 
-Las rutas hay que protegerlas por eso es necesario crear un componente llamado **ProtectedRouter.jsx**. Nosotros hemos creado uno para el ejemplo el cual comprueba la ruta en que estamos y obtiene el estado del usuario para saber si ha hecho login o no (**UserService.isLogged()**), si no se ha hecho login saca el usuario de esa ruta y lo manda hacía otra ruta que hemos preconfigurado, en este caso redireccionamos hacía **/login**.
+Las rutas deben protegerse, por lo que es necesario crear un componente llamado **ProtectedRouter.jsx**. Nosotros hemos creado uno para el ejemplo, el cual comprueba la ruta en la que estamos y obtiene el estado del usuario para saber si ha hecho log-in o no (**UserService.isLogged()**). Si no se ha hecho log-in, sacará al usuario de esa ruta y lo mandará hacia otra ruta que hemos preconfigurado, en este caso, hacia **/login**.
 
-Para usar el componente simplemente vamos a nuestro **App.js** y ahí reemplazamos el <Route> por nuestro <ProtectedRouter>. Si abres **App.js** lo verás fácilmente: 
+Para usar el componente, simplemente iremos a nuestro **App.js** y ahí reemplazaremos el <Route> por nuestro <ProtectedRouter>. Si abrimos **App.js**, lo veremos fácilmente: 
 
 ```jsx
 function App() {
@@ -112,7 +112,7 @@ function App() {
 
 ## Enviar WAX
 
-Para ver un ejemplo de como envíar algo de WAX puedes ir a **pages/Page2.jsx**. El **UserService** guarda la sesión y simplemente accedemos a esa sesión y firmamos alguna transacción, el código que verás de ejemplo será el siguiente: 
+Para ver un ejemplo de cómo enviar algo de WAX, puedes ir a **pages/Page2.jsx**. El **UserService** guarda la sesión, y, si simplemente accedemos a esa sesión y firmamos alguna transacción, el código que veremos de ejemplo será el siguiente: 
 
 ```js
 UserService.session.signTransaction(
