@@ -56,7 +56,7 @@ Para iniciar el proyecto se puede hacer con:
 ## Archivo Menu.jsx
 El archivo **components/Menu.jsx** es el componente del menú de nuestra aplicación/página y cuenta con cuatro pestañas, Main, Home, Page2, Login/Logout.
 
-Si nos fijamos tendremos dos pestañas deshabilitada que no se permite el acceso: Home y Page2. Para lograr hacer esto simplemente se comprueba si el usuario ha hecho login o no gracias a **UserState.isLogged** (en el estado de redux) y se muestra u oculta con algún estilo **CSS**.
+Si nos fijamos tendremos dos pestañas deshabilitada que no se permite el acceso: **Home** y **Page2**. Para lograr hacer esto simplemente se comprueba si el usuario ha hecho login o no gracias a **UserState.isLogged** (en el estado de redux) y se muestra u oculta con algún estilo **CSS**.
 
 En cuanto a la pestaña Login/Logout mostramos una u otra dependiendo del estado del usuario, esto se puede ver fácilmente si entras el archivo pero lo que verías sería algo así: 
 ```jsx
@@ -71,7 +71,7 @@ En cuanto a la pestaña Login/Logout mostramos una u otra dependiendo del estado
 ```
 ## Sistema de login
 
-El sistema de inicio de login está en el **components/Menu.jsx**. Una vez que se clique el botón de login en el menú, este llama a **handleLogin** y a la vez llama a la función de **UserService.login()** dentro de esta función se le puede pasar una función anónima como callback y cuando se haya hecho login se recibe una respuesta, dentro de este callback comprobamos si se ha hecho login o no.
+El sistema de inicio de login está en el **components/Menu.jsx**. Una vez que se haga click sobre el botón de login en el menú, este llama a **handleLogin** y a la vez llama a la función de **UserService.login()** dentro de esta función se le puede pasar una función anónima como callback y cuando se haya hecho login se recibe una respuesta, dentro de este callback comprobamos si se ha hecho login o no.
 Si se hace login se redirige hacía una página (**en este caso /home**), de lo contrario se hace el logout del usuario para limpiar datos.
 
 ```jsx
